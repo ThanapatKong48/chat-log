@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ບັນທຶກລູກຄ້າ</title>
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--ink:#22302f;--mute:#7a8583;--line:#e8e4dc;--brand:#0f766e;--brand2:#14b8a6;--star:#f5a623;--good:#15803d;--goodbg:#e8f6ed;--bad:#c62828;--badbg:#fdecec}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans Lao","Phetsarath OT",system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:100px}
+header{background:linear-gradient(135deg,#0b5953,#14b8a6);color:#fff;padding:22px 16px 70px}
+.wrap{max-width:860px;margin:0 auto}
+header h1{margin:0 0 14px;font-size:22px}
+.monthbar{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.18);border-radius:14px;padding:6px}
+.monthbar button{background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:10px;font-size:18px}
+.monthbar span{font-weight:700;font-size:18px}
+main{max-width:860px;margin:-50px auto 0;padding:0 16px}
+.card{background:var(--card);border-radius:18px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin-bottom:16px}
+h2{font-size:16px;margin:0 0 12px}
+button{font-family:inherit;font-size:15px;border:0;border-radius:10px;cursor:pointer;padding:10px 16px}
+input,select,textarea{width:100%;padding:11px 12px;font-size:16px;font-family:inherit;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--brand2);border-color:transparent}
+textarea{min-height:80px;resize:vertical}
+label.l{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi{background:var(--card);border-radius:18px;padding:14px;box-shadow:0 4px 16px rgba(0,0,0,.06);text-align:center}
+.kpi b{display:block;font-size:28px;line-height:1.2;color:var(--brand)}
+.kpi span{font-size:12.5px;color:var(--mute)}
+.kpi.star b{color:var(--star)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.kpis2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.kpi.good b{color:var(--good)}.kpi.bad b{color:var(--bad)}
+.dist{display:grid;grid-template-columns:34px 1fr 28px;gap:8px;align-items:center;font-size:14px;margin:6px 0}
+.track{height:10px;background:#efece5;border-radius:6px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--star);border-radius:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--brand);color:#fff;font-weight:600}
+.ghost{background:#efece5;color:var(--ink)}
+.danger{background:var(--badbg);color:var(--bad)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.chip{background:#efece5;border-radius:20px;padding:7px 14px;font-size:14px}
+.chip.on{background:var(--brand);color:#fff}
+.rec{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.rec:last-child{border:0}
+.av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:none}
+.body{flex:1;min-width:0}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.top b{cursor:pointer}
+.stars{color:var(--star);letter-spacing:1px;white-space:nowrap}
+.stars .off{color:#d9d5cb}
+.noStar{font-size:12px;color:var(--mute)}
+.meta{font-size:13px;color:var(--mute);margin-top:2px}
+.item{display:inline-block;background:#fff4de;color:#8a5a00;border-radius:8px;padding:4px 10px;font-size:13.5px;margin-top:8px}
+.msg{margin-top:8px;padding:10px 12px;border-radius:10px;background:#f7f5f0;font-size:14.5px}
+.msg.good{background:var(--goodbg)}.msg.bad{background:var(--badbg)}
+.acts{margin-top:8px;display:flex;gap:14px}
+.acts button{background:none;padding:0;font-size:13px;color:var(--mute);text-decoration:underline}
+.empty{text-align:center;color:var(--mute);padding:22px}
+.fab{position:fixed;right:18px;bottom:20px;z-index:8;background:var(--brand);color:#fff;font-weight:700;font-size:17px;padding:16px 22px;border-radius:30px;box-shadow:0 6px 20px rgba(15,118,110,.45)}
+dialog{border:0;border-radius:20px;padding:0;width:min(520px,94vw);max-height:92vh;box-shadow:0 12px 50px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+#fbody{padding:20px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.picker{display:flex;gap:6px;align-items:center}
+.picker button{background:none;font-size:38px;line-height:1;padding:0 2px;color:#d9d5cb}
+.picker button.on{color:var(--star)}
+.picker small{margin-left:8px;color:var(--mute)}
+.btns{display:flex;gap:10px;margin-top:18px}
+.btns button{flex:1;padding:13px}
+#toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:20px;opacity:0;transition:.3s;pointer-events:none;z-index:30}
+#toast.show{opacity:1}
+@media(max-width:600px){.two{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>📒 ບັນທຶກລູກຄ້າ</h1>
+    <div class="monthbar">
+      <button id="prev">‹</button>
+      <span id="monthLabel"></span>
+      <button id="next">›</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ສະຫຼຸບ -->
+  <div class="kpis">
+    <div class="kpi"><b id="kChats">0</b><span>ຕອບແຊັດ (ຄັ້ງ)</span></div>
+    <div class="kpi"><b id="kCust">0</b><span>ຈຳນວນລູກຄ້າ (ຄົນ)</span></div>
+    <div class="kpi star"><b id="kAvg">-</b><span>ດາວສະເລ່ຍ ⭐</span></div>
+  </div>
+  <div class="kpis2">
+    <div class="kpi"><b id="kItems">0</b><span>ສິນຄ້າທີ່ຂາຍໄດ້ (ຊິ້ນ)</span></div>
+    <div class="kpi good"><b id="kGood">0</b><span>ຂໍ້ດີ (4-5 ດາວ)</span></div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>⭐ ການໃຫ້ດາວ</h2>
+      <div id="dist"></div>
+      <div class="kpi bad" style="box-shadow:none;background:var(--badbg);margin-top:10px;padding:8px"><b id="kBad" style="font-size:20px">0</b><span>ຂໍ້ເສຍ (1-2 ດາວ)</span></div>
+    </div>
+    <div class="card">
+      <h2>🏆 ສິນຄ້າຂາຍດີ</h2>
+      <div id="top"></div>
+    </div>
+  </div>
+
+  <!-- ລາຍການ -->
+  <div class="card">
+    <h2>ລາຍການບັນທຶກ</h2>
+    <input type="search" id="search" placeholder="🔍 ຄົ້ນຫາຊື່ລູກຄ້າ ຫຼື ສິນຄ້າ (ທຸກເດືອນ)">
+    <div class="chips" id="chips">
+      <button class="chip on" data-f="all">ທັງໝົດ</button>
+      <button class="chip" data-f="good">👍 ຂໍ້ດີ</button>
+      <button class="chip" data-f="mid">😐 ກາງໆ</button>
+      <button class="chip" data-f="bad">👎 ຂໍ້ເສຍ</button>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <!-- ສຳຮອງ -->
+  <div class="card">
+    <h2>ຂໍ້ມູນ ແລະ ສຳຮອງ</h2>
+    <div class="tools">
+      <button class="ghost" id="csvBtn">⬇ ດາວໂຫຼດ CSV (ເດືອນນີ້)</button>
+      <button class="ghost" id="bkBtn">💾 ສຳຮອງຂໍ້ມູນ</button>
+      <button class="ghost" id="impBtn">📂 ນຳເຂົ້າຂໍ້ມູນ</button>
+    </div>
+    <input type="file" id="impFile" accept=".json" style="display:none">
+  </div>
+</main>
+
+<button class="fab" id="fab">+ ເພີ່ມບັນທຶກ</button>
+
+<dialog id="dlg"><div id="fbody"></div></dialog>
+<div id="toast"></div>
+
+<script>
+const KEY = "chatLogV3";
+const CH = ["WhatsApp","Facebook","Instagram","TikTok","Line","ໂທລະສັບ","ໜ້າຮ້ານ","ອື່ນໆ"];
+const MN = ["ມັງກອນ","ກຸມພາ","ມີນາ","ເມສາ","ພຶດສະພາ","ມິຖຸນາ","ກໍລະກົດ","ສິງຫາ","ກັນຍາ","ຕຸລາ","ພະຈິກ","ທັນວາ"];
+const STAR_TXT = ["ຍັງບໍ່ໃຫ້ດາວ","ແຍ່ຫຼາຍ","ບໍ່ດີ","ກາງໆ","ດີ","ດີຫຼາຍ"];
+const $ = (id) => document.getElementById(id);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const today = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e[k] = v;
+    else e.setAttribute(k, v);
+  }
+  kids.flat().forEach((c) => { if (c != null && c !== false) e.append(c); });
+  return e;
+}
+function toast(t) { const n = $("toast"); n.textContent = t; n.classList.add("show"); setTimeout(() => n.classList.remove("show"), 1700); }
+
+/* ---------- ຂໍ້ມູນ ---------- */
+let db = load();
+function load() {
+  try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.records)) return d; } catch (e) {}
+  const fresh = { records: [] };
+  try { // ຍ້າຍຂໍ້ມູນຈາກເວີຊັນກ່ອນ
+    const v2 = JSON.parse(localStorage.getItem("chatLogV2"));
+    if (v2 && Array.isArray(v2.chats)) {
+      const custs = v2.customers || [];
+      const nm = (id) => (custs.find((c) => c.id === id) || {}).name || "-";
+      v2.chats.forEach((x) => fresh.records.push({ id: uid(), ts: Date.now(), date: x.date, name: nm(x.customerId), channel: x.channel || "", item: "", qty: 0, stars: x.type === "good" ? 5 : x.type === "bad" ? 1 : 0, message: x.message || "" }));
+      custs.forEach((c) => (c.purchases || []).forEach((p) => fresh.records.push({ id: uid(), ts: Date.now(), date: p.date, name: c.name, channel: c.channel || "", item: p.item, qty: +p.qty || 1, stars: 0, message: "" })));
+    }
+  } catch (e) {}
+  return fresh;
+}
+function save() { localStorage.setItem(KEY, JSON.stringify(db)); }
+
+let month = today().slice(0, 7);
+let filter = "all";
+
+function starsEl(n) {
+  if (!n) return el("span", { class: "noStar" }, "ບໍ່ໃຫ້ດາວ");
+  const s = el("span", { class: "stars" });
+  for (let i = 1; i <= 5; i++) s.append(el("span", { class: i <= n ? "" : "off" }, "★"));
+  return s;
+}
+const kind = (n) => (n >= 4 ? "good" : n >= 1 && n <= 2 ? "bad" : n === 3 ? "mid" : "none");
+const sortRec = (a, b) => b.date.localeCompare(a.date) || (b.ts || 0) - (a.ts || 0);
+
+/* ---------- ເດືອນ ---------- */
+function shiftMonth(d) {
+  let [y, m] = month.split("-").map(Number);
+  m += d; if (m > 12) { m = 1; y++; } if (m < 1) { m = 12; y--; }
+  month = y + "-" + String(m).padStart(2, "0");
+  render();
+}
+$("prev").onclick = () => shiftMonth(-1);
+$("next").onclick = () => shiftMonth(1);
+
+/* ---------- ສະແດງຜົນ ---------- */
+function render() {
+  const [y, m] = month.split("-").map(Number);
+  $("monthLabel").textContent = MN[m - 1] + " " + y;
+
+  const rows = db.records.filter((r) => r.date.startsWith(month));
+  const rated = rows.filter((r) => r.stars > 0);
+  $("kChats").textContent = rows.length;
+  $("kCust").textContent = new Set(rows.map((r) => r.name.trim().toLowerCase())).size;
+  $("kAvg").textContent = rated.length ? (rated.reduce((s, r) => s + r.stars, 0) / rated.length).toFixed(1) : "-";
+  $("kItems").textContent = rows.reduce((s, r) => s + (+r.qty || 0), 0);
+  $("kGood").textContent = rows.filter((r) => kind(r.stars) === "good").length;
+  $("kBad").textContent = rows.filter((r) => kind(r.stars) === "bad").length;
+
+  // ການກະຈາຍດາວ
+  const dist = $("dist"); dist.innerHTML = "";
+  for (let s = 5; s >= 1; s--) {
+    const c = rows.filter((r) => r.stars === s).length;
+    const pct = rated.length ? (c / rated.length) * 100 : 0;
+    dist.append(el("div", { class: "dist" }, el("span", {}, s + " ★"), el("div", { class: "track" }, el("i", { style: "width:" + pct + "%" })), el("b", {}, String(c))));
+  }
+
+  // ສິນຄ້າຂາຍດີ
+  const items = {};
+  rows.forEach((r) => { if (r.item && r.item.trim()) { const k = r.item.trim(); items[k] = (items[k] || 0) + (+r.qty || 0); } });
+  const top = Object.entries(items).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const tp = $("top"); tp.innerHTML = "";
+  if (!top.length) tp.append(el("div", { class: "empty" }, "ຍັງບໍ່ມີຂໍ້ມູນ"));
+  top.forEach(([n, q], i) => tp.append(el("div", { class: "dist", style: "grid-template-columns:1fr auto" }, el("span", {}, (i + 1) + ". " + n), el("b", {}, q + " ຊິ້ນ"))));
+
+  renderList();
+  // ລາຍຊື່ແນະນຳ
+}
+
+function renderList() {
+  const q = $("search").value.trim().toLowerCase();
+  let rows = q
+    ? db.records.filter((r) => (r.name + " " + r.item).toLowerCase().includes(q))
+    : db.records.filter((r) => r.date.startsWith(month));
+  if (filter !== "all") rows = rows.filter((r) => kind(r.stars) === filter);
+  rows.sort(sortRec);
+
+  const box = $("list"); box.innerHTML = "";
+  if (!rows.length) { box.append(el("div", { class: "empty" }, "ບໍ່ມີຂໍ້ມູນ · ກົດ \"+ ເພີ່ມບັນທຶກ\" ເພື່ອເລີ່ມ")); return; }
+  rows.forEach((r) => box.append(
+    el("div", { class: "rec" },
+      el("div", { class: "av" }, (r.name || "?").charAt(0).toUpperCase()),
+      el("div", { class: "body" },
+        el("div", { class: "top" },
+          el("b", { onclick: () => { $("search").value = r.name; renderList(); window.scrollTo({ top: $("search").offsetTop - 20, behavior: "smooth" }); } }, r.name),
+          starsEl(r.stars)),
+        el("div", { class: "meta" }, r.date + " · " + (r.channel || "-")),
+        r.item ? el("div", { class: "item" }, "🛍 " + r.item + (r.qty ? " × " + r.qty : "")) : null,
+        r.message ? el("div", { class: "msg " + kind(r.stars) }, r.message) : null,
+        el("div", { class: "acts" },
+          el("button", { onclick: () => openForm(r) }, "ແກ້ໄຂ"),
+          el("button", { onclick: () => { if (confirm("ຕ້ອງການລຶບລາຍການນີ້ບໍ?")) { db.records = db.records.filter((x) => x.id !== r.id); save(); render(); } } }, "ລຶບ"))))));
+}
+
+$("search").oninput = renderList;
+document.querySelectorAll("#chips .chip").forEach((b) => b.onclick = () => {
+  filter = b.dataset.f;
+  document.querySelectorAll("#chips .chip").forEach((x) => x.classList.toggle("on", x === b));
+  renderList();
+});
+
+/* ---------- ຟອມເພີ່ມ / ແກ້ໄຂ ---------- */
+const dlg = $("dlg");
+dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+$("fab").onclick = () => openForm(null);
+
+function openForm(rec) {
+  const isNew = !rec;
+  const r = rec || { id: uid(), ts: Date.now(), date: today(), name: "", channel: "WhatsApp", item: "", qty: 1, stars: 0, message: "" };
+  let stars = r.stars;
+
+  const names = [...new Set(db.records.map((x) => x.name))];
+  const items = [...new Set(db.records.map((x) => x.item).filter(Boolean))];
+
+  const name = el("input", { type: "text", list: "dlNames", value: r.name, placeholder: "ເຊັ່ນ: ນາງ ມະລິ", autocomplete: "off" });
+  const date = el("input", { type: "date", value: r.date });
+  const channel = el("select"); CH.forEach((c) => channel.append(el("option", {}, c))); channel.value = r.channel || "WhatsApp";
+  const item = el("input", { type: "text", list: "dlItems", value: r.item || "", placeholder: "ເຊັ່ນ: ເສື້ອຍືດ", autocomplete: "off" });
+  const qty = el("input", { type: "number", min: "0", value: String(r.qty ?? 1) });
+  const msg = el("textarea", { placeholder: "ລູກຄ້າເວົ້າວ່າແນວໃດ... (ຂໍ້ດີ ຫຼື ຂໍ້ເສຍ)" }); msg.value = r.message || "";
+
+  const hint = el("small");
+  const picker = el("div", { class: "picker" });
+  function drawStars() {
+    picker.innerHTML = "";
+    for (let i = 1; i <= 5; i++) picker.append(el("button", { type: "button", class: i <= stars ? "on" : "", onclick: () => { stars = stars === i ? 0 : i; drawStars(); } }, "★"));
+    hint.textContent = STAR_TXT[stars]; picker.append(hint);
+  }
+  drawStars();
+
+  const form = el("form", { onsubmit: (e) => {
+    e.preventDefault();
+    if (!name.value.trim()) { alert("ກະລຸນາໃສ່ຊື່ລູກຄ້າ"); return; }
+    Object.assign(r, { name: name.value.trim(), date: date.value || today(), channel: channel.value, item: item.value.trim(), qty: item.value.trim() ? (+qty.value || 1) : 0, stars, message: msg.value.trim() });
+    if (isNew) db.records.push(r);
+    save();
+    month = r.date.slice(0, 7); $("search").value = "";
+    dlg.close(); toast("ບັນທຶກແລ້ວ ✓"); render();
+  } },
+    el("div", { class: "row" },
+      el("div", {}, el("label", { class: "l" }, "ຊື່ລູກຄ້າ"), name),
+      el("div", {}, el("label", { class: "l" }, "ວັນທີ"), date)),
+    el("label", { class: "l" }, "ຊ່ອງທາງ"), channel,
+    el("div", { class: "row" },
+      el("div", {}, el("label", { class: "l" }, "ສິນຄ້າທີ່ຊື້"), item),
+      el("div", {}, el("label", { class: "l" }, "ຈຳນວນ (ຊິ້ນ)"), qty)),
+    el("label", { class: "l" }, "ລູກຄ້າໃຫ້ກີ່ດາວ"), picker,
+    el("label", { class: "l" }, "ຄຳຕິຊົມ"), msg,
+    el("div", { class: "btns" },
+      el("button", { type: "button", class: "ghost", onclick: () => dlg.close() }, "ຍົກເລີກ"),
+      el("button", { type: "submit", class: "btn" }, "ບັນທຶກ")));
+
+  const body = $("fbody"); body.innerHTML = "";
+  body.append(
+    el("h2", { style: "font-size:19px;margin-bottom:4px" }, isNew ? "ເພີ່ມບັນທຶກໃໝ່" : "ແກ້ໄຂບັນທຶກ"),
+    el("datalist", { id: "dlNames" }, names.map((n) => el("option", { value: n }))),
+    el("datalist", { id: "dlItems" }, items.map((n) => el("option", { value: n }))),
+    form);
+  dlg.showModal();
+  if (isNew) name.focus();
+}
+
+/* ---------- ສຳຮອງ / CSV ---------- */
+function download(name, text, type) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type }));
+  a.download = name; a.click();
+}
+$("csvBtn").onclick = () => {
+  const line = (r) => r.map((c) => '"' + String(c ?? "").replace(/"/g, '""') + '"').join(",");
+  const rows = [["ວັນທີ","ຊື່ລູກຄ້າ","ຊ່ອງທາງ","ສິນຄ້າ","ຈຳນວນ","ດາວ","ຄຳຕິຊົມ"]];
+  db.records.filter((r) => r.date.startsWith(month)).sort(sortRec).forEach((r) => rows.push([r.date, r.name, r.channel, r.item, r.qty, r.stars, r.message]));
+  download("customers-" + month + ".csv", "\ufeff" + rows.map(line).join("\n"), "text/csv;charset=utf-8");
+};
+$("bkBtn").onclick = () => download("backup-" + today() + ".json", JSON.stringify(db, null, 1), "application/json");
+$("impBtn").onclick = () => $("impFile").click();
+$("impFile").onchange = (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const d = JSON.parse(rd.result);
+      if (!Array.isArray(d.records)) throw 0;
+      if (confirm("ຂໍ້ມູນປັດຈຸບັນຈະຖືກແທນທີ່ດ້ວຍໄຟລ໌ນີ້. ດຳເນີນການຕໍ່ບໍ?")) { db = d; save(); render(); toast("ນຳເຂົ້າສຳເລັດ ✓"); }
+    } catch (err) { alert("ໄຟລ໌ບໍ່ຖືກຕ້ອງ"); }
+    e.target.value = "";
+  };
+  rd.readAsText(f);
+};
+
+render();
+</script>
+</body>
+</html>
